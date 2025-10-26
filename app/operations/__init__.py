@@ -23,6 +23,25 @@ from typing import Union  # Import Union for type hinting multiple possible type
 # Define a type alias for numbers that can be either int or float
 Number = Union[int, float]
 
+
+########################## added Power ##################################
+def power(base: float, exponent: float) -> float:
+    """
+    Raise a number to a given power and return the result.
+
+    Parameters:
+    - base (int or float): The base number.
+    - exponent (int or float): The exponent to raise the base to.
+
+    Returns:
+    - float: The result of base raised to the power of exponent.
+    """
+    # Perform exponentiation
+    result = base ** exponent
+    return result
+
+########################################################################
+
 def add(a: Number, b: Number) -> Number:
     """
     Add two numbers and return the result.
