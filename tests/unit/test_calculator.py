@@ -2,7 +2,7 @@
 
 import pytest  # Import the pytest framework for writing and running tests
 from typing import Union  # Import Union for type hinting multiple possible types
-from app.operations import add, subtract, multiply, divide  # Import the calculator functions from the operations module
+from app.operations import add, subtract, multiply, divide, power  # Import the calculator functions from the operations module
 
 # Define a type alias for numbers that can be either int or float
 Number = Union[int, float]
@@ -232,3 +232,42 @@ def test_divide_by_zero() -> None:
     # Assert that the exception message contains the expected error message
     assert "Cannot divide by zero!" in str(excinfo.value), \
         f"Expected error message 'Cannot divide by zero!', but got '{excinfo.value}'"
+    
+# ---------------------------------------------
+#Unit tests for power
+# ---------------------------------------------
+@pytest.mark.parametrize(
+    "base, exponent, expected",
+    [
+        (2, 3, 8),             # positive base, positive exponent
+        (5, 0, 1),             # any base, zero exponent
+        (0, 5, 0),             # zero base, positive exponent
+        (-2, 3, -8),           # negative base, odd exponent
+        (-2, 2, 4),            # negative base, even exponent
+        (2, -2, 0.25),         # positive base, negative exponent
+        (9, 0.5, 3.0),         # fractional exponent
+    ],
+    ids=[
+        "positive_base_positive_exponent",
+        "base_any_zero_exponent",
+        "zero_base_positive_exponent",
+        "negative_base_odd_exponent",
+        "negative_base_even_exponent",
+        "positive_base_negative_exponent",
+        "fractional_exponent"
+    ]
+)
+def test_power(base: Number, exponent: Number, expected: Number) -> None:
+    """
+    Test the 'power' function with various combinations of bases and exponents.
+
+    This parameterized test verifies that the 'power' function correctly calculates
+    base raised to the exponent, handling positive, negative, zero, and fractional exponents.
+
+    Parameters:
+    - base (Number): The base number.
+    - exponent (Number): The exponent to raise the base to.
+    - expected (Number): The expected result of the exponentiation.
+    """
+    result = power(base, exponent)
+    assert result == expected, f"Expected power({base}, {exponent}) to be {expected}, but got {result}"
