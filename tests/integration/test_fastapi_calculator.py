@@ -152,3 +152,28 @@ def test_divide_by_zero_api(client):
     # Assert that the 'error' field contains the correct error message
     assert "Cannot divide by zero!" in response.json()['error'], \
         f"Expected error message 'Cannot divide by zero!', got '{response.json()['error']}'"
+    
+# ---------------------------------------------
+# Test Function: test_power_api
+# ---------------------------------------------
+
+def test_power_api(client):
+    """
+    Test the Power API Endpoint.
+
+    This test verifies that the `/power` endpoint correctly takes the power of the first number
+    by the second number provided in the JSON payload and returns the expected result.
+
+    Steps:
+    1. Send a POST request to the `/power` endpoint with JSON data `{'a': 2, 'b': 3}`.
+    2. Assert that the response status code is `200 OK`.
+    3. Assert that the JSON response contains the correct result (`8`).
+    """
+    # Send a POST request to the '/power' endpoint with JSON payload
+    response = client.post('/power', json={'a': 2, 'b': 3})
+    
+    # Assert that the response status code is 200 (OK)
+    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    
+    # Assert that the JSON response contains the correct 'result' value
+    assert response.json()['result'] == 8, f"Expected result 8, got {response.json()['result']}"
