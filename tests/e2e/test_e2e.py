@@ -71,3 +71,48 @@ def test_calculator_divide_by_zero(page, fastapi_server):
     # "Error: Cannot divide by zero!". This verifies that the application handles division by zero
     # gracefully and displays the correct error message to the user.
     assert page.inner_text('#result') == 'Error: Cannot divide by zero!'
+
+############################################
+####### added new E2E tests #################
+# #################################
+
+#-----------------subtract------------------
+
+
+@pytest.mark.e2e
+def test_calculator_subtract(page, fastapi_server):
+    """
+    Test the subtraction functionality of the calculator.
+    """
+    page.goto('http://localhost:8000')
+    page.fill('#a', '10')
+    page.fill('#b', '4')
+    page.click('button:text("Subtract")')
+    assert page.inner_text('#result') == 'Calculation Result: 6'
+
+
+#-----------------multiply------------------
+
+@pytest.mark.e2e
+def test_calculator_multiply(page, fastapi_server):
+    """
+    Test the multiplication functionality of the calculator.
+    """
+    page.goto('http://localhost:8000')
+    page.fill('#a', '10')
+    page.fill('#b', '4')
+    page.click('button:text("Multiply")')
+    assert page.inner_text('#result') == 'Calculation Result: 40'
+
+#-----------------power------------------
+
+@pytest.mark.e2e
+def test_calculator_power(page, fastapi_server):
+    """
+    Test the power functionality of the calculator.
+    """
+    page.goto('http://localhost:8000')
+    page.fill('#a', '2')
+    page.fill('#b', '3')
+    page.click('button:text("power")')
+    assert page.inner_text('#result') == 'Calculation Result: 8'
