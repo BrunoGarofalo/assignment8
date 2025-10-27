@@ -9,8 +9,15 @@ from app.operations import add, subtract, multiply, divide, power  # Ensure corr
 import uvicorn
 import logging
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
+
+# # Setup logging, add  timestamps and formatting to logger for better readability
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
+
+# initialize logger
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
@@ -68,8 +75,10 @@ async def add_route(operation: OperationRequest):
     """
     Add two numbers.
     """
+    logger.info(f"Addition operation with a={operation.a} and b={operation.b}")
     try:
         result = add(operation.a, operation.b)
+        logger.info(f"Addition result: {result}")
         return OperationResponse(result=result)
     except Exception as e:
         logger.error(f"Add Operation Error: {str(e)}")
@@ -80,8 +89,10 @@ async def subtract_route(operation: OperationRequest):
     """
     Subtract two numbers.
     """
+    logger.info(f"Subtraction operation with a={operation.a} and b={operation.b}")
     try:
         result = subtract(operation.a, operation.b)
+        logger.info(f"Subtraction result: {result}")
         return OperationResponse(result=result)
     except Exception as e:
         logger.error(f"Subtract Operation Error: {str(e)}")
@@ -92,8 +103,10 @@ async def multiply_route(operation: OperationRequest):
     """
     Multiply two numbers.
     """
+    logger.info(f"Multiplication operation with a={operation.a} and b={operation.b}")
     try:
         result = multiply(operation.a, operation.b)
+        logger.info(f"Multiplication result: {result}")
         return OperationResponse(result=result)
     except Exception as e:
         logger.error(f"Multiply Operation Error: {str(e)}")
@@ -104,8 +117,10 @@ async def divide_route(operation: OperationRequest):
     """
     Divide two numbers.
     """
+    logger.info(f"Division operation with a={operation.a} and b={operation.b}")
     try:
         result = divide(operation.a, operation.b)
+        logger.info(f"Division result: {result}")
         return OperationResponse(result=result)
     except ValueError as e:
         logger.error(f"Divide Operation Error: {str(e)}")
@@ -120,13 +135,16 @@ async def power_route(operation: OperationRequest):
     """
     Get the power of two numbers.
     """
+    logger.info(f"Exponentiation operation with a={operation.a} and b={operation.b}")
     try:
         result = power(operation.a, operation.b)
+        logger.info(f"Exponentiation result: {result}")
         return OperationResponse(result=result)
     except Exception as e:
         logger.error(f"Power Operation Error: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
 
 if __name__ == "__main__":
+    logger.info(f"Application started!")
     uvicorn.run(app, host="127.0.0.1", port=8000)
 

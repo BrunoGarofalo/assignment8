@@ -5,6 +5,18 @@ import time
 import pytest
 from playwright.sync_api import sync_playwright
 import requests
+import logging
+
+
+# add  timestamps and formatting to logger for better readability
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
+
+# initialize logger
+logger = logging.getLogger(__name__)
 
 @pytest.fixture(scope='session')
 def fastapi_server():
@@ -23,7 +35,8 @@ def fastapi_server():
     start_time = time.time()
     server_up = False
     
-    print("Starting FastAPI server...")
+    print("Starting FastAPI server for test")
+    logger.info("Starting FastAPI server test ...")
     
     while time.time() - start_time < timeout:
         try:
@@ -31,6 +44,7 @@ def fastapi_server():
             if response.status_code == 200:
                 server_up = True
                 print("FastAPI server is up and running.")
+                logger.info("✅ FastAPI test server is up and running at %s", server_url)
                 break
         except requests.exceptions.ConnectionError:
             pass
@@ -38,31 +52,36 @@ def fastapi_server():
     
     if not server_up:
         fastapi_process.terminate()
+        logger.error(f"❌ FastAPI server failed to start within {timeout} seconds")
         raise RuntimeError("FastAPI server failed to start within timeout period.")
     
     yield
     
     # Terminate FastAPI server
-    print("Shutting down FastAPI server...")
+    print("Shutting down FastAPI server after Playwright test")
     fastapi_process.terminate()
     fastapi_process.wait()
-    print("FastAPI server has been terminated.")
+    print("FastAPI server has been terminated after Playwright test")
 
 @pytest.fixture(scope="session")
 def playwright_instance_fixture():
     """
     Fixture to manage Playwright's lifecycle.
     """
+    logger.info("Initializing Playwright for test")
     with sync_playwright() as p:
         yield p
+    logger.info("Playwright shut down after test")
 
 @pytest.fixture(scope="session")
 def browser(playwright_instance_fixture):
     """
     Fixture to launch a browser instance.
     """
+    logger.info("Launching Chromium for test")
     browser = playwright_instance_fixture.chromium.launch(headless=True)
     yield browser
+    logger.info("Closing Chromium browser for Playwright test")
     browser.close()
 
 @pytest.fixture(scope="function")
@@ -70,6 +89,8 @@ def page(browser):
     """
     Fixture to create a new page for each test.
     """
+    logger.debug("Opening new browser page after Playwright test")
     page = browser.new_page()
     yield page
+    logger.debug("Closing browser page after Playwright test")
     page.close()

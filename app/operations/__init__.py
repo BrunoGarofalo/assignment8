@@ -37,8 +37,14 @@ def power(base: float, exponent: float) -> float:
     - float: The result of base raised to the power of exponent.
     """
     # Perform exponentiation
-    result = base ** exponent
-    return result
+
+    try:
+        result = base ** exponent
+
+        return result
+    except Exception as e:
+
+        raise
 
 ########################################################################
 
@@ -60,7 +66,9 @@ def add(a: Number, b: Number) -> Number:
     5.5
     """
     # Perform addition of a and b
+    
     result = a + b
+
     return result
 
 def subtract(a: Number, b: Number) -> Number:
@@ -81,7 +89,9 @@ def subtract(a: Number, b: Number) -> Number:
     3.5
     """
     # Perform subtraction of b from a
+
     result = a - b
+
     return result
 
 def multiply(a: Number, b: Number) -> Number:
@@ -102,7 +112,9 @@ def multiply(a: Number, b: Number) -> Number:
     10.0
     """
     # Perform multiplication of a and b
+
     result = a * b
+
     return result
 
 def divide(a: Number, b: Number) -> float:
@@ -129,11 +141,14 @@ def divide(a: Number, b: Number) -> float:
         ...
     ValueError: Cannot divide by zero!
     """
+
     # Check if the divisor is zero to prevent division by zero
     if b == 0:
         # Raise a ValueError with a descriptive message
+
         raise ValueError("Cannot divide by zero!")
     
     # Perform division of a by b and return the result as a float
     result = a / b
+
     return result
