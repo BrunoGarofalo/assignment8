@@ -1,5 +1,12 @@
 # 📦 Project Setup
 
+
+## ***New Features Added:***
+1. Added Power operation
+2. Added unit testing and E2E testing
+3. Added some logging to app/operantions/__init__.py and Playwright testing
+4. Added security code to .trivyignore
+
 ---
 
 # 🧩 1. Install Homebrew (Mac Only)
