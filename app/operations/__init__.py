@@ -37,14 +37,9 @@ def power(base: float, exponent: float) -> float:
     - float: The result of base raised to the power of exponent.
     """
     # Perform exponentiation
+    result = base ** exponent
+    return result
 
-    try:
-        result = base ** exponent
-
-        return result
-    except Exception as e:
-
-        raise
 
 ########################################################################
 
